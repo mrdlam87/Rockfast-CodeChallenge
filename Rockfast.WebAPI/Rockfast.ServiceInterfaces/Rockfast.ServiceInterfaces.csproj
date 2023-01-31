@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rockfast.ApiDatabase\Rockfast.ApiDatabase.csproj" />
+  </ItemGroup>
+
 </Project>

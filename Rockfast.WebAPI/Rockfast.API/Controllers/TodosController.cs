@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Rockfast.ApiDatabase.DomainModels;
 using Rockfast.ServiceInterfaces;
 using Rockfast.ViewModels;
 
@@ -18,26 +19,34 @@ namespace Rockfast.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TodoVM>> Get()
+        public async Task<IEnumerable<Todo>> GetAll() => await _todoService.GetAllTodo();
+
+        [HttpGet("{id}")]
+        public async Task<Todo> Get(int id)
         {
-            throw new NotImplementedException();
+            var todo = await _todoService.GetTodo(id);
+
+            return todo;
         }
 
         [HttpPost]
-        public async Task<TodoVM> Post(TodoVM model)
+        public async Task<Todo> Post(Todo todo)
         {
-            throw new NotImplementedException();
+            await _todoService.CreateTodo(todo);
+            return todo;
         }
 
-        [HttpPut]
-        public async Task<TodoVM> Put(TodoVM model)
+        [HttpPut("{id}")]
+        public async Task<Todo> Put(int id, Todo todo)
         {
-            throw new NotImplementedException();
+            await _todoService.UpdateTodo(id, todo);
+            return todo;
         }
-        [HttpDelete]
+
+        [HttpDelete("{id}")]
         public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            await _todoService.DeleteTodo(id);
         }
     }
 }
