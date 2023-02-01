@@ -11,6 +11,7 @@ namespace Rockfast.ApiDatabase
     public class ApiDbContext : DbContext
     {
         public DbSet<Todo> Todos { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public ApiDbContext(DbContextOptions options)
             :base(options)
@@ -19,6 +20,10 @@ namespace Rockfast.ApiDatabase
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Todo>()
+                .HasOne(t => t.User)
+                .WithMany(u => u.Todos)
+                .HasForeignKey(t => t.UserId);
         }
     }
 }

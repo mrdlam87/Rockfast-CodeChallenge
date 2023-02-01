@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Rockfast.ApiDatabase;
 using Rockfast.ApiDatabase.DomainModels;
+using Rockfast.ViewModels;
 
 namespace Rockfast.ServiceInterfaces
 {
     public interface ITodoService
     {
-        Task<IEnumerable<Todo>> GetAllTodo();
-        Task<Todo?> GetTodo(int id);
-        Task CreateTodo(Todo todo);
-        Task UpdateTodo(int id, Todo todo);
-        Task DeleteTodo(int id);
+        Task<IEnumerable<TodoDTO>> GetAllTodo();
+        Task<TodoDTO> GetTodo(int id);
+        Task CreateTodo(TodoDTO todoDto);
+        Task<bool> UpdateTodo(int id, TodoDTO todoDto);
+        Task<bool> DeleteTodo(int id);
     }
 }

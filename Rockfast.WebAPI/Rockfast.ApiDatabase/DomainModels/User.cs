@@ -9,17 +9,13 @@ using System.Threading.Tasks;
 
 namespace Rockfast.ApiDatabase.DomainModels
 {
-    public class Todo
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public DateTime? DateCreated { get; set; }
-        public bool Complete { get; set; }
-        public DateTime? DateCompleted { get; set; }
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public List<Todo> Todos { get; set; }
     }
 }

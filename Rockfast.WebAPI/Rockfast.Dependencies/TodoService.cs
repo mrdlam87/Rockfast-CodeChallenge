@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rockfast.ViewModels;
 using Rockfast.ApiDatabase;
 using Rockfast.ApiDatabase.DomainModels;
 using Rockfast.ServiceInterfaces;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,43 +19,71 @@ namespace Rockfast.Dependencies
             this._database = db;
         }
 
-        public async Task<IEnumerable<Todo>> GetAllTodo()
+        public async Task<IEnumerable<TodoDTO>> GetAllTodo()
         {
-            return await _database.Todos.ToListAsync();
+            return await _database.Todos
+                .Select(td => ItemToDTO(td))
+                .ToListAsync();
         }
 
-        public async Task<Todo?> GetTodo(int id) 
+        public async Task<TodoDTO> GetTodo(int id) 
         {
-            return await _database.Todos.FirstOrDefaultAsync(todo => todo.Id == id);
+            var todo = await _database.Todos.FirstOrDefaultAsync(todo => todo.Id == id);
+
+            if (todo is null)
+                return null;
+
+            return ItemToDTO(todo);
         }
 
-        public async Task CreateTodo(Todo todo)
+        public async Task CreateTodo(TodoDTO todoDto)
         {
+            Todo todo = new Todo
+            {
+                Id= todoDto.Id,
+                Name = todoDto.Name,
+                Complete= todoDto.Complete,
+                DateCreated= todoDto.DateCreated,
+                UserId= todoDto.UserId,
+            };
             todo.DateCreated = DateTime.Now;
             _database.Todos.Add(todo);
             await _database.SaveChangesAsync();
         }
 
-        public async Task UpdateTodo(int id, Todo todo)
+        public async Task<bool> UpdateTodo(int id, TodoDTO todoDto)
         {
-            var updatedTodo = await GetTodo(id);
+            var updatedTodo = await _database.Todos.FirstOrDefaultAsync(todo => todo.Id == id);
             if (updatedTodo is null)
-                return;
+                return false;
 
-            updatedTodo.Name = todo.Name;
-            updatedTodo.Complete = todo.Complete;
+            updatedTodo.Name = todoDto.Name;
+            updatedTodo.Complete = todoDto.Complete;
 
             await _database.SaveChangesAsync();
+            return true;
         }
 
-        public async Task DeleteTodo(int id) 
+        public async Task<bool> DeleteTodo(int id) 
         { 
-            var todo = await GetTodo(id);
+            var todo = await _database.Todos.FirstOrDefaultAsync(todo => todo.Id == id);
             if(todo is null)
-                return;
+                return false;
 
             _database.Todos.Remove(todo);
             await _database.SaveChangesAsync();
+            return true;
         }
+
+        private static TodoDTO ItemToDTO(Todo todo) =>
+            new TodoDTO 
+            { 
+                Id = todo.Id, 
+                Name = todo.Name,
+                Complete= todo.Complete,
+                DateCreated= todo.DateCreated,
+                DateCompleted= todo.DateCompleted,
+                UserId= todo.UserId,
+            };
     }
 }

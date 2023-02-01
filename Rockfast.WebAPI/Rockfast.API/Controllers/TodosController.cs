@@ -18,35 +18,52 @@ namespace Rockfast.API.Controllers
             this._logger = logger;
         }
 
+        //  /todos
         [HttpGet]
-        public async Task<IEnumerable<Todo>> GetAll() => await _todoService.GetAllTodo();
+        public async Task<IEnumerable<TodoDTO>> GetAll() => await _todoService.GetAllTodo();
 
+        //  /todos/{id}
         [HttpGet("{id}")]
-        public async Task<Todo> Get(int id)
+        public async Task<ActionResult<TodoDTO>> Get(int id)
         {
-            var todo = await _todoService.GetTodo(id);
+            var todoDto = await _todoService.GetTodo(id);
 
-            return todo;
+            if (todoDto is null)
+                return NotFound();
+
+            return Ok(todoDto);
         }
 
+        //  /todos
         [HttpPost]
-        public async Task<Todo> Post(Todo todo)
+        public async Task<TodoDTO> Post(TodoDTO todoDto)
         {
-            await _todoService.CreateTodo(todo);
-            return todo;
+            await _todoService.CreateTodo(todoDto);
+            return todoDto;
         }
 
+        //  /todos/{id}
         [HttpPut("{id}")]
-        public async Task<Todo> Put(int id, Todo todo)
+        public async Task<ActionResult> Put(int id, TodoDTO todoDto)
         {
-            await _todoService.UpdateTodo(id, todo);
-            return todo;
+            bool successful = await _todoService.UpdateTodo(id, todoDto);
+
+            if (!successful)
+                return NotFound();
+
+            return NoContent();
         }
 
+        //  /todos/{id}
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            await _todoService.DeleteTodo(id);
+            bool successful = await _todoService.DeleteTodo(id);
+
+            if (!successful)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }
