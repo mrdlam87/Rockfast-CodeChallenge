@@ -13,6 +13,23 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Policy1",
+        policy =>
+        {
+            policy.WithOrigins("http://127.0.0.1:3000");
+        });
+
+    options.AddPolicy("AnotherPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://127.0.0.1:3000")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
