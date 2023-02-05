@@ -35,15 +35,15 @@ namespace Rockfast.Dependencies
 
             return ItemToDTO(user);
         }
-        public async Task CreateUser(UserDTO userDTO)
+        public async Task<UserDTO> CreateUser(UserDTO userDTO)
         {
             User user = new User
             {
-                Id = userDTO.Id,
                 Name = userDTO.Name,
             };
             _database.Users.Add(user);
             await _database.SaveChangesAsync();
+            return ItemToDTO(user);
         }
 
         public async Task<bool> UpdateUser(int id, UserDTO userDTO)
