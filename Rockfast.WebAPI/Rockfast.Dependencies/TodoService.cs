@@ -36,11 +36,10 @@ namespace Rockfast.Dependencies
             return ItemToDTO(todo);
         }
 
-        public async Task CreateTodo(TodoDTO todoDto)
+        public async Task<TodoDTO> CreateTodo(TodoDTO todoDto)
         {
             Todo todo = new Todo
             {
-                Id= todoDto.Id,
                 Name = todoDto.Name,
                 Complete= todoDto.Complete,
                 DateCreated= todoDto.DateCreated,
@@ -49,6 +48,7 @@ namespace Rockfast.Dependencies
             todo.DateCreated = DateTime.Now;
             _database.Todos.Add(todo);
             await _database.SaveChangesAsync();
+            return ItemToDTO(todo);
         }
 
         public async Task<bool> UpdateTodo(int id, TodoDTO todoDto)

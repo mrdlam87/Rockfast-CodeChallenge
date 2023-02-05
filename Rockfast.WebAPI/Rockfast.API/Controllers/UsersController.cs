@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rockfast.ApiDatabase.DomainModels;
 using Rockfast.ServiceInterfaces;
@@ -6,6 +7,7 @@ using Rockfast.ViewModels;
 
 namespace Rockfast.API.Controllers
 {
+    [EnableCors("AnotherPolicy")]
     [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -60,8 +62,8 @@ namespace Rockfast.API.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDTO>> Post(UserDTO userDto)
         {
-            await _userService.CreateUser(userDto);
-            return Ok(userDto);
+            var user = await _userService.CreateUser(userDto);
+            return Ok(user);
         }
 
         //  /users/{id}/todos
@@ -73,8 +75,8 @@ namespace Rockfast.API.Controllers
                 return NotFound();
 
             todoDto.UserId = id;
-            await _todoService.CreateTodo(todoDto);
-            return Ok(todoDto);
+            var todo = await _todoService.CreateTodo(todoDto);
+            return Ok(todo);
         }
 
         //  /users/{id}
@@ -90,7 +92,6 @@ namespace Rockfast.API.Controllers
         }
 
         //  /users/{userId}/todos/{todoId}
-        //fix for invalid user
         [HttpPut("{userId}/todos/{todoId}")]
         public async Task<ActionResult> PutTodo(int userId, int todoId, TodoDTO todoDto)
         {

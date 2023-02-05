@@ -15,16 +15,10 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Policy1",
-        policy =>
-        {
-            policy.WithOrigins("http://127.0.0.1:8000");
-        });
-
     options.AddPolicy("AnotherPolicy",
         policy =>
         {
-            policy.WithOrigins("http://127.0.0.1:8000")
+            policy.WithOrigins("http://localhost:8000")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
         });
@@ -36,6 +30,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

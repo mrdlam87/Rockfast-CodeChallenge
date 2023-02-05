@@ -7,6 +7,7 @@ using Rockfast.ViewModels;
 
 namespace Rockfast.API.Controllers
 {
+    [EnableCors("AnotherPolicy")]
     [Route("[controller]")]
     [ApiController]
     public class TodosController : ControllerBase
@@ -37,10 +38,10 @@ namespace Rockfast.API.Controllers
 
         //  /todos
         [HttpPost]
-        public async Task<TodoDTO> Post(TodoDTO todoDto)
+        public async Task<ActionResult<TodoDTO>> Post(TodoDTO todoDto)
         {
-            await _todoService.CreateTodo(todoDto);
-            return todoDto;
+            var todo = await _todoService.CreateTodo(todoDto);
+            return Ok(todo);
         }
 
         //  /todos/{id}

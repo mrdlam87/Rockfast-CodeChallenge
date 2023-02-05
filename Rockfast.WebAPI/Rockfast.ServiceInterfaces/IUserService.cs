@@ -11,7 +11,7 @@ namespace Rockfast.ServiceInterfaces
     {
         Task<IEnumerable<UserDTO>> GetAllUsers();
         Task<UserDTO> GetUser(int id);
-        Task CreateUser(UserDTO userDTO);
+        Task<UserDTO> CreateUser(UserDTO userDTO);
         Task<bool> UpdateUser(int id, UserDTO userDTO);
         Task<bool> DeleteUser(int id);
         Task<IEnumerable<TodoDTO>> GetTodosByUser(int userId);
