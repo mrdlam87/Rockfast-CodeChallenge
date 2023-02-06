@@ -7,7 +7,7 @@ using Rockfast.ViewModels;
 
 namespace Rockfast.API.Controllers
 {
-    [EnableCors("AnotherPolicy")]
+    [EnableCors("Policy1")]
     [Route("[controller]")]
     [ApiController]
     public class TodosController : ControllerBase

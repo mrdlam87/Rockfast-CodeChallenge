@@ -60,7 +60,7 @@ namespace Rockfast.Dependencies
 
             updatedTodo.Name = todoDto.Name;
             updatedTodo.Complete = todoDto.Complete;
-            updatedTodo.DateCompleted = DateTime.Now;
+            updatedTodo.DateCompleted = todoDto.DateCompleted;
 
             await _database.SaveChangesAsync();
             return true;

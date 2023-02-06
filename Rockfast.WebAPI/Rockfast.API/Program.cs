@@ -15,7 +15,7 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AnotherPolicy",
+    options.AddPolicy("Policy1",
         policy =>
         {
             policy.WithOrigins("http://localhost:8000")
