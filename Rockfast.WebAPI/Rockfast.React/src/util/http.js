@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BACKEND_API_URL = "http://127.0.0.1:5086";
+const BACKEND_API_URL = "api";
 
 export const fetchUsers = async () => {
   const reponse = await axios.get(BACKEND_API_URL + "/users");

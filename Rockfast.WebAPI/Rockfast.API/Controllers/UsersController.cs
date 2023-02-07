@@ -7,8 +7,7 @@ using Rockfast.ViewModels;
 
 namespace Rockfast.API.Controllers
 {
-    [EnableCors("Policy1")]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
